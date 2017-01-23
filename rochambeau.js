@@ -3,6 +3,7 @@
 var score = [0, 0, 0];
 // The variables store the current player's and computer's choices
 // 0 = Rock, 1 = Paper, 2 = Scissors
+var match = [0, 0];
 var playerChoice;
 var computerChoice;
 
@@ -48,11 +49,11 @@ function playGame() {
         console.log("win");
         return 1;
     }
-else {
-    // All other combinations are losses
-    console.log("lose");
-    return -1;
-}
+    else {
+        // All other combinations are losses
+        console.log("lose");
+        return -1;
+    }
 }
 
 function displayScoreBoard(winsId, lossesId, tiesId) {
@@ -60,12 +61,39 @@ function displayScoreBoard(winsId, lossesId, tiesId) {
     document.getElementById(lossesId).innerHTML = score[2];
     document.getElementById(tiesId).innerHTML = score[1];
 }
+function displayMatchScore(matchWinsId, matchLossesId) {
+    document.getElementById(matchWins).innerHTML = match[0];
+    document.getElementById(matchLosses).innerHTML = match[1];
+
+}
 
 function updateScore(val) {
     ++score[val];
     console.log("The score is now " + score);
+    displayMatchScore();
 }
 
+function updateMatchScore(val) {
+    ++match[val];
+    console.log("The match score is now" + match);
+}
+function displayMatchScore() {
+   if (score[0] == 2) {
+      updateMatchScore(0);
+       score[0] = 0;
+       score[1] = 0;
+       score[2] = 0;
+   }
+   else if (score[2] == 2) {
+       updateMatchScore(1);
+       score[0] = 0;
+       score[1] = 0;
+       score[2] = 0;
+   }
+   else {
+       return playGame();
+   }
+}
 function displayGameResult(resultId) {
     // Define an array of text labels for the choices 0, 1, 2;
     var choices = ["Rock", "Paper", "Scissors", "Spock", "Lizard"];
@@ -83,7 +111,7 @@ function displayGameResult(resultId) {
     else if (result == -1) {
         updateScore(2);
         // Display that it was a loss
-        document.getElementById(resultId).innerHTML = message + "YOU LOOSE! ";
+        document.getElementById(resultId).innerHTML = message + "YOU LOSE! ";
         document.getElementById(resultId).className = "alert alert-danger";
     }
     else {
